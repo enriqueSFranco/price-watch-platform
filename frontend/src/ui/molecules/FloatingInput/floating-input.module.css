@@ -1,0 +1,60 @@
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-input-group);
+  width: 100%;
+  position: relative;
+  border-radius: var(--border-radius);
+}
+
+
+.inputGroup__input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: var(--padding-input);
+  border: 1px solid var(--color-border);
+  border-radius: inherit;
+  background-color: var(--color-bg-input);
+  color: var(--color-text-default);
+  font-size: var(--font-size-input);
+  appearance: none;
+  outline: none;
+  transition: var(--transition-default);
+  cursor: text;
+}
+
+.inputGroup__input:focus {
+  border-color: var(--color-border-focus);
+}
+
+.inputGroup__label {
+  position: absolute;
+  top: 50%;
+  left: var(--label-left);
+  transform: translateY(-50%);
+  font-size: var(--font-size-label);
+  color: var(--color-label);
+  letter-spacing: var(--letter-spacing-label);
+  pointer-events: none;
+  transition: var(--transition-default);
+  background-color: var(--color-bg-input);
+  padding: 0 var(--label-padding-inline);
+}
+
+.inputGroup__input:focus + .inputGroup__label,
+.inputGroup__input:not(:placeholder-shown) + .inputGroup__label {
+  top: 0;
+  left: var(--label-left-focused);
+  font-size: var(--font-size-label-small);
+  color: var(--color-label-focus);
+}
+
+/* @media (prefers-color-scheme: light) {
+  :root {
+    --color-bg-input: #fff;
+    --color-text-default: #000;
+    --color-label: #666;
+    --color-label-focus: #000;
+    --color-border: #ccc;
+  }
+} */
