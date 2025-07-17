@@ -1,52 +1,52 @@
 .inputGroup {
   display: flex;
   flex-direction: column;
-  gap: var(--gap-input-group);
+  gap: 8px;
   width: 100%;
   position: relative;
-  border-radius: var(--border-radius);
+  border-radius: 4px;
 }
 
 
 .inputGroup__input {
   width: 100%;
   box-sizing: border-box;
-  padding: var(--padding-input);
-  border: 1px solid var(--color-border);
+  padding: 0.75em 1em;
+  border: 1px solid #e2e2e2;
   border-radius: inherit;
-  background-color: var(--color-bg-input);
-  color: var(--color-text-default);
-  font-size: var(--font-size-input);
+  background-color: #fff;
+  color: #565656;
+  font-size: 16px;
   appearance: none;
   outline: none;
-  transition: var(--transition-default);
+  transition: all 0.3s ease-in-out;
   cursor: text;
 }
 
 .inputGroup__input:focus {
-  border-color: var(--color-border-focus);
+  border-color: #00a6ff;
 }
 
 .inputGroup__label {
   position: absolute;
   top: 50%;
-  left: var(--label-left);
+  left: 10px;
   transform: translateY(-50%);
   font-size: var(--font-size-label);
-  color: var(--color-label);
-  letter-spacing: var(--letter-spacing-label);
+  color: #565656;
+  letter-spacing: 0.5px;
   pointer-events: none;
-  transition: var(--transition-default);
-  background-color: var(--color-bg-input);
-  padding: 0 var(--label-padding-inline);
+  transition: all 0.3s ease-in-out;
+  background-color: #fff;
+  padding: 0 0.5em;
 }
 
 .inputGroup__input:focus + .inputGroup__label,
 .inputGroup__input:not(:placeholder-shown) + .inputGroup__label {
   top: 0;
-  left: var(--label-left-focused);
-  font-size: var(--font-size-label-small);
-  color: var(--color-label-focus);
+  left: 10px;
+  font-size: 12px;
+  color: #565656;
 }
 
 /* @media (prefers-color-scheme: light) {
