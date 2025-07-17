@@ -1,0 +1,31 @@
+.chip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0.25em 0.75em;
+  border-radius: 4px;
+}
+
+.chipText {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+/* status */
+
+.chip[data-status="default"] {
+  background-color: #80808049;
+  color: #808080;
+}
+
+.chip[data-status="success"] {
+  background-color: var(--color--bg-status-ok);
+  color: var(--color-status-ok);
+}
+
+.chip[data-status="error"] {
+  background-color: var(--red-100);
+  color: var(--color-status-error);
+}
