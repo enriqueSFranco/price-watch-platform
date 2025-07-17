@@ -30,7 +30,7 @@ export function ModalProvider({children}: Readonly<{children: React.ReactNode}>)
       modalState.onCloseCallback();
   }
     dispatch({type: 'CLOSE_MODAL'})
-  }, [modalState.onCloseCallback])
+  }, [modalState])
 
   const modalDispatch = {
     openModal,
