@@ -1,44 +1,72 @@
 "use client"
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { useModal, useModalDispatch } from "@/context/modal-context";
 import { Button } from "@/ui/atoms/Button/button";
 import { IconClose } from "@/ui/atoms/Icons/icon-close";
 import styles from "./modal.module.css";
+import clsx from "clsx";
 
 export function Modal() {
+  const [isRendered, setIsRendered] = useState(false);
+  const [isAnimationActive, setIsAnimationActive] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
   const { isOpen, title, content, footerButtons } = useModal();
   const {closeModal} = useModalDispatch()
-  const modalRef = useRef<HTMLDivElement>(null);
+
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (event.key === "Escape") {
+      closeModal()
+    }
+  }, [closeModal])
 
   useEffect(() => {
-    if (!isOpen) return
+    let animationOutTimeout: NodeJS.Timeout;
+    let animationInTimeout: NodeJS.Timeout;
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event)
-      if (event.key === "Escape") {
-        closeModal()
+    if (isOpen) {
+      setIsRendered(true)
+      animationInTimeout = setTimeout(() => {
+        setIsAnimationActive(true)
+        modalRef.current?.focus();
+        document.addEventListener('keydown', handleKeyDown)
+      }, 50)
+    } else {
+      if (isRendered) {
+        setIsAnimationActive(false)
+        document.removeEventListener('keydown', handleKeyDown)
+        animationOutTimeout = setTimeout(() => {
+          setIsRendered(false);
+        }, 300);
       }
     }
+    return () => {
+      clearTimeout(animationInTimeout);
+      clearTimeout(animationOutTimeout);
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  }, [isOpen, isRendered, handleKeyDown])
 
-    document.addEventListener('keydown', handleKeyDown)
-    modalRef.current?.focus();
+  if(!isRendered) return null
 
-    return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen, closeModal])
+  const containerClasses = clsx(styles.modalContainer, {
+    [styles.entered]: isAnimationActive,
+  });
+  const overlayClasses = clsx(styles.modalOverlay, {
+    [styles.visible]: isAnimationActive,
+  });
 
-  if(!isOpen) return null
-
-  return (
+  return createPortal(
     <div
-      className={styles.modalOverlay}
+      className={overlayClasses}
       onClick={closeModal}
       aria-modal="true"
       role="dialog"
     >
       <div
         ref={modalRef}
-        className={styles.modalContainer}
+        className={containerClasses}
         aria-labelledby="modal-title"
         tabIndex={-1}
         onClick={e => e.stopPropagation()}
@@ -57,6 +85,7 @@ export function Modal() {
           <footer className={styles.modalFooter}>{footerButtons}</footer>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
