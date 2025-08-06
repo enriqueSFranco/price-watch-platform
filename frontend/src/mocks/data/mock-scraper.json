@@ -1,0 +1,22 @@
+{
+  "status": true,
+  "message": "Producto scrapeado con éxito.",
+  "data": {
+    "site": "liverpool",
+    "product": {
+        "id": "f2f36252-3f9d-4a29-8c1d-ac4f6a147224",
+        "userId": "12345",
+        "name": "Xbox Series S All-Digital Console",
+        "originalUrl": "https://www.amazon.com/X-Box-S-All-Digital-Console/dp/B09PYTJXXQ/...",
+        "domain": "amazon",
+        "imageUrl": "https://m.media-amazon.com/images/I/61hbxViX8PL._SY679_.jpg",
+        "currentPrice": 6556.00,
+        "currency": "MXN",
+        "initialPrice": 6556.00,
+        "lastCheckedAt": "2025-07-19T18:00:00Z",
+        "createdAt": "2025-07-18T12:00:00Z",
+        "status": "paused",
+        "notificationRules": []
+    }
+  }
+}
