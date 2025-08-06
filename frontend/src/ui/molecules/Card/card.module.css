@@ -1,0 +1,103 @@
+.card {
+  display: flex;
+  justify-content: center;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  padding: 1rem;
+  aspect-ratio: 4 / 3;
+  position: relative;
+  width: 100%;
+}
+
+/* --- Orientación --- */
+.card--vertical {
+  flex-direction: column;
+  gap: var(--card-gap);
+}
+
+.card--horizontal {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--card-gap);
+}
+
+/* --- Tamaños --- */
+/* .card--medium (implícito) */
+.card--small {
+  border-radius: 6px;
+}
+
+.card--large {
+  border-radius: 12px;
+}
+
+/* --- Variantes --- */
+.card--outlined {
+  background-color: transparent;
+  border: 1px solid var(--card-border-outlined);
+  box-shadow: none;
+
+}
+
+.card--elevated {
+  background-color: var(--card-bg-elevated);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Estilos de Sub-componentes --- */
+.cardMedia {
+  max-width: 100%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cardMedia img,
+.cardMedia video,
+.cardMedia picture {
+  display: block;
+}
+
+.cardMedia img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+  object-position: center;
+}
+
+.cardContent {
+  padding: var(--card-padding);
+  flex-grow: 1;
+}
+
+.cardActionArea {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: var(--card-padding);
+  text-align: left;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+.cardHeader {
+  padding: var(--card-padding);
+  padding-bottom: 0;
+}
+
+.cardFooter {
+  padding: var(--card-padding);
+  padding-top: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
