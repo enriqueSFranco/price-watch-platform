@@ -1,20 +1,16 @@
+import { CellContent } from "@/ui/atoms/CellContent/cell-content";
+import { ColumnDefinition, RowItemWhitId } from "./types";
+import { TableHeader } from "./table-header";
+import { TableRow } from "./table-row";
 import styles from "./table.module.css";
-
-interface RowItemWhitId {
-  id: string;
-}
-
-interface ColumnDefinition<T extends RowItemWhitId> {
-  key: keyof T | string;
-  header: string;
-  renderCell?: (item: T) => React.ReactNode;
-}
+import clsx from "clsx";
 
 interface TableProps<T extends RowItemWhitId> {
   caption?: string;
-  summary?: string
+  summary?: string;
   columns: ColumnDefinition<T>[];
   rows: T[];
+  isLoading?: boolean;
 }
 
 export function Table<T extends RowItemWhitId>({
@@ -22,27 +18,50 @@ export function Table<T extends RowItemWhitId>({
   summary,
   columns,
   rows,
+  isLoading = false,
 }: TableProps<T>) {
   return (
     <table
       summary={summary}
       className={styles.tableProducts}
-      aria-label={caption ? caption : "tabla de datos"}
+      aria-label={caption ? caption : "tabla de productos"}
     >
       {caption && <caption className={styles.tableCaption}>{caption}</caption>}
       <TableHeader columns={columns} />
-      <tbody className={styles.tableBody} role="rowgroup">
-        {rows.length === 0 ? (
+      <tbody
+        className={clsx(styles.tableBody, styles.fadeInTable)}
+        role="rowgroup"
+      >
+        {isLoading ? (
+          <tr className={styles.tableRowLoader}>
+            {/* Solo necesitamos una fila para el esqueleto de carga, que se ocupe de toda la tabla */}
+            <td colSpan={columns.length} className={styles.cell}>
+              <div className={styles.skeletonLoaderContainer}>
+                {/* Repetimos la "tarjeta" de esqueleto para un efecto más dinámico */}
+                {Array.from({ length: 5 }).map((_, idx) => (
+                  <div key={idx} className={styles.skeletonRow}>
+                    {columns.map((_, i) => (
+                      <div key={i} className={styles.skeletonCell}></div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </td>
+          </tr>
+        ) : rows.length === 0 ? (
           <tr className={styles.tableRow}>
             <td
               colSpan={columns.length}
               className={styles.cell}
               style={{ textAlign: "center", padding: "20px" }}
             >
-              No hay datos para mostrar.
+              <CellContent align="center">
+                No hay datos para mostrar.
+              </CellContent>
             </td>
           </tr>
         ) : (
+          rows &&
           rows.map((rowItem) => (
             <TableRow
               key={`tableRow-${rowItem.id}`}
@@ -53,50 +72,5 @@ export function Table<T extends RowItemWhitId>({
         )}
       </tbody>
     </table>
-  );
-}
-
-interface TableHeaderProps<T extends RowItemWhitId> {
-  columns: ColumnDefinition<T>[];
-}
-function TableHeader<T extends RowItemWhitId>({
-  columns,
-}: TableHeaderProps<T>) {
-  return (
-    <thead className={styles.tableHeader} role="rowgroup">
-      <tr className={styles.tableRow}>
-        {columns.map((col) => (
-          <th
-            key={`col-${String(col.key)}`}
-            scope="col"
-            className={styles.columnHeader}
-          >
-            {col.header}
-          </th>
-        ))}
-      </tr>
-    </thead>
-  );
-}
-
-interface TableRowProps<T extends RowItemWhitId> {
-  item: T;
-  columns: ColumnDefinition<T>[];
-}
-
-function TableRow<T extends RowItemWhitId>({
-  item,
-  columns,
-}: TableRowProps<T>) {
-  return (
-    <tr key={`row-${item.id}`} className={styles.tableRow}>
-      {columns.map((col) => (
-        <td key={`cell-${String(col.key)}`} className={styles.cell}>
-          {col.renderCell
-            ? col.renderCell(item)
-            : String(item[col.key as keyof T])}
-        </td>
-      ))}
-    </tr>
   );
 }
