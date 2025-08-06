@@ -1,18 +1,28 @@
-import clsx from "clsx"
-import styles from "./button.module.css"
+import clsx from "clsx";
+import styles from "./button.module.css";
+
+type ButtonColor = "primary" | "secondary" | "success" | "error" | "warning" | "info";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  text: string
-  iconLeft?: React.ReactNode
-  iconRight?: React.ReactNode
+  children?: React.ReactNode
+  variant?: "contained" | "outlined" | "ghost";
+  color?: ButtonColor,
 }
 
-export function Button({text, iconLeft, iconRight, ...rest}: ButtonProps) {
+export function Button({
+  children,
+  variant = "outlined",
+ color = "primary",
+  ...rest
+}: ButtonProps) {
+  const buttonClass = clsx(styles.button,
+    styles[`button--variant-${variant}`],
+    styles[`button--color-${color}`],
+  );
+
   return (
-    <button {...rest} className={clsx(styles.button, {})}>
-      {iconLeft && iconLeft}
-      <label className={styles.buttonLabel}>{text}</label>
-      {iconRight && iconRight}
+    <button {...rest} data-variant={variant} data-color={color} className={buttonClass}>
+      {children}
     </button>
-  )
+  );
 }

@@ -1,24 +1,135 @@
 .button {
-  display: flex;
-  justify-content: center;
+  --color-primary-main: #3b82f6;
+  --color-primary-hover: #1565c0;
+  --color-primary-text: #ffffff;
+  --color-primary-border: #1976d2;
+
+  --color-success-main: #2e7d32;
+  --color-success-hover: #1b5e20;
+  --color-success-text: #ffffff;
+  --color-success-border: #2e7d32;
+
+  --color-error-main: #d32f2f;
+  --color-error-hover: #c62828;
+  --color-error-text: #ffffff;
+  --color-error-border: #d32f2f;
+
+  --color-warning-main: #ed6c02;
+  --color-warning-hover: #e65100;
+  --color-warning-text: #ffffff;
+  --color-warning-border: #ed6c02;
+
+  --color-info-main: #0288d1;
+  --color-info-hover: #01579b;
+  --color-info-text: #ffffff;
+  --color-info-border: #0288d1;
+}
+
+.button {
+  display: inline-flex;
+  width: fit-content;
   align-items: center;
-  gap: 8px;
-  padding: 0.75rem 1rem;
-  border-radius: 99px;
-  outline: none;
-  border: none;
+  justify-content: center;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
   cursor: pointer;
-  color: #fff;
-  background-color: #171717;
-  box-shadow: #0000003d 0px 3px 8px;
-  transition: background-color 300ms ease-in-out;
-}
-
-.button:hover {
-  background-color: #171717d8;
-}
-
-.buttonLabel {
+  transition: all 0.3s ease-in-out;
+  border: none;
+  gap: 6px;
   text-transform: capitalize;
-  cursor: inherit;
+  white-space: nowrap;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button :global(svg) {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* --- Variantes y Colores --- */
+
+/* Contained */
+.button--variant-contained.button--color-primary {
+  background-color: var(--color-primary-main);
+  color: var(--color-primary-text);
+}
+.button--variant-contained.button--color-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.button--variant-contained.button--color-success {
+  background-color: var(--color-success-main);
+  color: var(--color-success-text);
+}
+
+.button--variant-contained.button--color-success:hover:not(:disabled) {
+  background-color: var(--color-success-hover);
+}
+
+/* Outlined */
+.button--variant-outlined.button--color-primary {
+  background-color: var(--color-primary-main);
+  color: #fff;
+  /* border: 1px solid var(--color-primary-border); */
+}
+.button--variant-outlined.button--color-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-main, #1976d20d);
+  box-shadow: 0 0 0 5px #3b83f65f;
+}
+
+.button--variant-outlined.button--color-success {
+  background-color: transparent;
+  color: var(--color-success-main);
+  border: 1px solid var(--color-success-border);
+}
+.button--variant-outlined.button--color-success:hover:not(:disabled) {
+  background-color: var(--color-success-main, #2e7d32)0d;
+}
+
+/* Ghost */
+.button--variant-ghost.button--color-primary {
+  background-color: transparent;
+  color: var(--color-primary-main);
+}
+.button--variant-ghost.button--color-primary:hover:not(:disabled) {
+  background-color: var(--color-primary-main, #1976d2)0d;
+}
+
+.button--variant-ghost.button--color-success {
+  background-color: transparent;
+  color: var(--color-success-main);
+}
+.button--variant-ghost.button--color-success:hover:not(:disabled) {
+  background-color: var(--color-success-main, #2e7d32)0d;
+}
+
+/* TODO: Repetir este patrón para 'error', 'warning', 'info' y 'secondary' */
+
+/* --- Estilos de Loader --- */
+.loaderWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+}
+
+.loader {
+  width: 1rem;
+  height: 1rem;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
