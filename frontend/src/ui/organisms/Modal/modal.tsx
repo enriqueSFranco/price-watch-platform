@@ -21,12 +21,21 @@ export function Modal() {
     }
   }, [closeModal])
 
+  const lockScroll = useCallback(() => {
+    document.body.style.overflow = 'hidden'
+  }, [])
+
+  const unlockScroll = useCallback(() => {
+    document.body.style.overflow = ''
+  }, [])
+
   useEffect(() => {
     let animationOutTimeout: NodeJS.Timeout;
     let animationInTimeout: NodeJS.Timeout;
 
     if (isOpen) {
       setIsRendered(true)
+      lockScroll()
       animationInTimeout = setTimeout(() => {
         setIsAnimationActive(true)
         modalRef.current?.focus();
@@ -35,6 +44,7 @@ export function Modal() {
     } else {
       if (isRendered) {
         setIsAnimationActive(false)
+        unlockScroll()
         document.removeEventListener('keydown', handleKeyDown)
         animationOutTimeout = setTimeout(() => {
           setIsRendered(false);
@@ -46,7 +56,7 @@ export function Modal() {
       clearTimeout(animationOutTimeout);
       document.removeEventListener('keydown', handleKeyDown);
     }
-  }, [isOpen, isRendered, handleKeyDown])
+  }, [isOpen, isRendered, handleKeyDown, lockScroll, unlockScroll])
 
   if(!isRendered) return null
 
@@ -74,11 +84,12 @@ export function Modal() {
         <header className={styles.modalHeader}>
           <h2 id="modal-title">{title}</h2>
           <Button
-            text=""
             aria-label="Cerrar modal"
-            iconLeft={<IconClose />}
+            variant="ghost"
             onClick={closeModal}
-          />
+          >
+            <IconClose />
+          </Button>
         </header>
         <div className={styles.modalContent}>{content}</div>
         {footerButtons && (
