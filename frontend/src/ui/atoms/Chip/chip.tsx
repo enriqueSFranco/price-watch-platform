@@ -1,21 +1,23 @@
+import { getContrastingTextColor } from "@/lib/color";
 import styles from "./chip.module.css";
 import clsx from "clsx";
 
-type ChipStatus = "default" | "primary" | "success" | "warning" | "error" | "info" | "disabled"
-
+// type ChipStatus = "default" | "primary" | "success" | "warning" | "error" | "info" | "disabled"
 interface ChipProps {
   text: string;
-  status?: ChipStatus
-  iconLeft?: React.ReactNode;
-  iconRight?: React.ReactNode;
+  bgColor?: string;
+  startIcon?: React.ReactNode;
+  endIcon?: React.ReactNode;
 }
 
-export function Chip({ text, status = "default", iconLeft, iconRight }: ChipProps) {
+export function Chip({ text, bgColor="#e0e0e0", startIcon, endIcon }: ChipProps) {
+  const textColor = getContrastingTextColor(bgColor);
+
   return (
-    <div data-status={status} className={clsx(styles.chip, { })}>
-      {iconLeft && iconLeft}
+    <div style={{ backgroundColor: bgColor, color: textColor }} className={clsx(styles.chip)}>
+      {startIcon && startIcon}
       <span className={styles.chipText}>{text}</span>
-      {iconRight && iconRight}
+      {endIcon && endIcon}
     </div>
   );
 }
