@@ -93,3 +93,29 @@ Este frontend implementa la interfaz del sistema de monitoreo de precios:
 ✅ Vista de productos monitoreados  
 ✅ Arquitectura modular escalable  
 ✅ UI limpia con TailwindCSS
+
+---
+
+## 🏗️ Arquitectura General
+```bash
+src/
+├── app/                  # Directorio principal de ruteo (Next.js App Router)
+│   ├── (auth)/           # Grupo de rutas o layouts relacionados con Autenticación
+│   ├── dashboard/        # Rutas específicas del panel de control
+│   ├── products/         # Rutas para la gestión de productos
+│
+├── Auth/                 # Módulo de Autenticación (Lógica, hooks, servicios)
+│
+├── Products/             # Módulo de Productos (Lógica, hooks, servicios)
+│
+├── states/               # Manejo global del estado (ej. Redux Toolkit, Zustand)
+│   ├── api/              # Lógica de manejo de peticiones (ej. RTK Query)
+│   │   ├── baseApi.ts    # Configuración base para la API
+│   │   └── apiSlice.ts   # Slices específicos de la API
+│   └── apiSlice.ts       # Slices de estado global (no relacionados con la API)
+│
+├── components/           # Componentes UI reutilizables (Botones, Tarjetas, etc.)
+├── constants/            # Valores inmutables y de configuración global
+└── utils/                # Funciones auxiliares (helpers)
+
+```
