@@ -70,3 +70,26 @@ src/
   - Extracción rápida (5–8s por producto)
 
 ---
+
+# 🛒 Price Watch Platform — Frontend  
+**Next.js 14 (App Router) · TypeScript · Redux Toolkit · RTK Query · TailwindCSS**
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black)
+![React](https://img.shields.io/badge/React-18-blue)
+![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-RTK_Query-purple)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.x-teal)
+
+---
+
+## 🎯 Resumen del Proyecto
+
+Este frontend implementa la interfaz del sistema de monitoreo de precios:
+
+✅ Registro / Login  
+✅ Autenticación con cookies httpOnly  
+✅ Redux Toolkit + RTK Query para consumo del backend  
+✅ Dashboard del usuario  
+✅ Agregar productos al monitoreo  
+✅ Vista de productos monitoreados  
+✅ Arquitectura modular escalable  
+✅ UI limpia con TailwindCSS
