@@ -13,14 +13,14 @@
 
 Este backend implementa una **plataforma de monitoreo de precios en e-commerce**:
 
-✅ **Arquitectura Hexagonal / DDD**  
-✅ **Autenticación segura con JWT (vía cookies httpOnly)**  
-✅ **Scraper de productos** (Amazon / Liverpool)
-✅ **Control de monitoreo por usuario**
-✅ **Historial de precios**  
-✅ **PostgreSQL + Drizzle ORM**  
-✅ **Totalmente dockerizado**
-✅ **Tests unitarios + integración (Jest)** 
+- [x] Arquitectura Hexagonal / DDD       
+- [ ] Autenticación segura con JWT (vía cookies httpOnly)        
+- [x] Scraper de productos** (Amazon / Liverpool)         
+- [x] Control de monitoreo por usuario          
+- [x] Historial de precios         
+- [x] PostgreSQL + Drizzle ORM          
+- [ ] Totalmente dockerizado           
+- [ ] Tests unitarios + integración (Jest)         
 
 ---
 
@@ -43,10 +43,11 @@ src/
 └── shared/           # Elementos transversales que se usan en todo el proyecto
     └── utils/
 
+```
 - **Domain:** Entidades, Value Objects, reglas de negocio  
 - **Application:** Use cases, puertos  
 - **Infrastructure:** Controladores, routers, repositorios, Drizzle, scrapers  
-```
+
 ---
 
 ## 🚀 Features principales
@@ -56,14 +57,14 @@ src/
 - Tokens JWT almacenados en **cookies httpOnly**
 - Middleware de autorización y protección de rutas
 
-### 🛒 Gestión de Productos
+### 📦 Gestión de Productos
 - Guardado de productos monitoreados por usuario  
 - Previas (preview) sin guardar  
 - Historial de precios  
 - Upsert inteligente por URL + usuario  
 - Estados del monitoreo (Active, Paused, Disabled)
 
-### 🤖 Scraper
+### 🕷️ Scraper
 - Puppeteer con:
   - Rotación de user agents
   - Retries
@@ -85,14 +86,14 @@ src/
 
 Este frontend implementa la interfaz del sistema de monitoreo de precios:
 
-✅ Registro / Login  
-✅ Autenticación con cookies httpOnly  
-✅ Redux Toolkit + RTK Query para consumo del backend  
-✅ Dashboard del usuario  
-✅ Agregar productos al monitoreo  
-✅ Vista de productos monitoreados  
-✅ Arquitectura modular escalable  
-✅ UI limpia con TailwindCSS
+- [ ] Registro / Login  
+- [ ] Autenticación con cookies httpOnly  
+- [ ] Redux Toolkit + RTK Query para consumo del backend  
+- [ ] Dashboard del usuario  
+- [ ] Agregar productos al monitoreo  
+- [ ] Vista de productos monitoreados  
+- [ ] Arquitectura modular escalable  
+- [ ] UI limpia con TailwindCSS
 
 ---
 
