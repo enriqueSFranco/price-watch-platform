@@ -91,6 +91,7 @@ El scraper está construido con **Puppeteer** y optimizado para velocidad, resil
 ```bash
 # Scraping de un producto de Liverpool
 npm run scrape -- --Store=liverpool --url="https://www.liverpool.com.mx/tienda/pdp/.../1175253218"
+npm run scrape:liverpool
 
 # Scraping de todos los e-commerce soportados
 npm run scrape:all
