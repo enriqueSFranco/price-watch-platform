@@ -44,6 +44,7 @@ src/
     └── utils/
 
 ```
+🧩 Capas
 - **Domain:** Entidades, Value Objects, reglas de negocio  
 - **Application:** Use cases, puertos  
 - **Infrastructure:** Controladores, routers, repositorios, Drizzle, scrapers  
@@ -64,11 +65,40 @@ src/
 - Upsert inteligente por URL + usuario  
 - Estados del monitoreo (Active, Paused, Disabled)
 
-### 🕷️ Scraper
-- Puppeteer con:
-  - Rotación de user agents
-  - Retries
-  - Extracción rápida (5–8s por producto)
+### 🕷️ Scraper  
+El scraper está construido con **Puppeteer** y optimizado para velocidad, resiliencia y facilidad de mantenimiento.
+
+**Características principales:**
+- Rotación automática de *user agents*
+- Retries con **exponential backoff**
+- Bloqueo de recursos pesados (ads, trackers, analytics)
+- Promedio de extracción: **3–6 segundos por producto**
+- Totalmente desacoplado del backend (puede ejecutarse solo)
+- Integrable con cron jobs o con los casos de uso de la API
+
+---
+
+## 🛠️ Ejecución del scraper (modo standalone)
+
+| Script                    | Acción                                                                          |
+|---------------------------|----------------------------------------------------------------------------------|
+| `npm run scrape`          | Ejecuta el orquestador general (`--Store` + `--url` obligatorios)               |
+| `npm run scrape:liverpool`| Scraping rápido de *Liverpool* con una URL de ejemplo                            |
+| `npm run scrape:amazon`   | Scraping rápido de *Amazon* con una URL de ejemplo                               |
+| `npm run scrape:all`      | Ejecuta scraping en **todos los e-commerce soportados**                          |
+
+#### ▶️ Ejemplos de ejecución
+```bash
+# Scraping de un producto de Liverpool
+npm run scrape -- --Store=liverpool --url="https://www.liverpool.com.mx/tienda/pdp/.../1175253218"
+
+# Scraping de todos los e-commerce soportados
+npm run scrape:all
+```
+
+(Incluye captura para demostrar extracción, parsing y tiempos de ejecución)
+
+<img width="720" alt="scraper-liverpool" src="https://github.com/user-attachments/assets/5833193d-f847-4f87-afc5-1683e4ce0d54" />
 
 ---
 
