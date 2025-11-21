@@ -72,7 +72,7 @@ El scraper está construido con **Puppeteer** y optimizado para velocidad, resil
 - Rotación automática de *user agents*
 - Retries con **exponential backoff**
 - Bloqueo de recursos pesados (ads, trackers, analytics)
-- Promedio de extracción: **3–6 segundos por producto**
+- Promedio de extracción: **4–6 segundos por producto**
 - Totalmente desacoplado del backend (puede ejecutarse solo)
 - Integrable con cron jobs o con los casos de uso de la API
 
