@@ -1,0 +1,31 @@
+.productCard {
+	outline: 1px solid red;
+	gap: 0.75rem;
+	color: var(--color-text);
+}
+
+.imageWrapper {
+	flex-shrink: 0;
+	display: grid;
+	place-items: center;
+	width: 40px;
+	height: 40px;
+	overflow: hidden;
+	background-color: transparent;
+}
+
+.image {
+	max-width: 100%;
+	height: auto;
+	object-fit: cover;
+	aspect-ratio: 1 / 1;
+}
+
+.productName {
+	font-size: 14px;
+	white-space: nowrap;
+	word-break: break-word;
+	text-wrap: balance;
+	line-height: 1.4;
+	overflow: hidden;
+}
