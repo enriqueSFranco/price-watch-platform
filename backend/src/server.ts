@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
-import { envConfig } from "./config/env.ts";
-import { createApp } from "./modules/shared/infraestructure/http/express";
+import { createApp } from "./core/infraestructure/http/express.ts";
+import { envConfig } from "./shared/config/env.ts";
 
 dotenv.config();
-const app = createApp()
+const app = createApp();
 const { REPOSITORY_TYPE, PORT } = envConfig;
 const port = PORT || 3000;
 
@@ -14,8 +14,8 @@ async function bootstrap() {
     });
   } catch (error) {
     console.error("Error al iniciar la aplicación:", error);
-    process.exit(1)
+    process.exit(1);
   }
 }
 
-bootstrap()
+bootstrap();

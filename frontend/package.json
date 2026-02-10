@@ -2,47 +2,64 @@
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "exports": {
+    "./biome": "./biome.json"
+  },
   "scripts": {
-    "dev": "NEXT_PUBLIC_MSW_ENV=enabled next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "biome check .",
+    "format": "biome format --write .",
+    "prepare": "husky",
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "lint-staged": {
+	"*.{js,jsx,ts,tsx}": [
+		"biome check --write"
+	],
+	"*.{css,scss,md,json}": [
+		"biome format --write"
+	]
+},
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@tailwindcss/postcss": "^4.1.11",
+    "axios": "^1.11.0",
+    "chart.js": "^4.5.0",
     "clsx": "^2.1.1",
+    "js-cookie": "^3.0.5",
     "next": "15.4.1",
     "next-auth": "^4.24.11",
     "postcss": "^8.5.6",
     "react": "19.1.0",
+    "react-chartjs-2": "^5.3.0",
     "react-dom": "19.1.0",
     "react-redux": "^9.2.0",
+    "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.11",
-    "use-debounce": "^10.0.5"
+    "use-debounce": "^10.0.5",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.3.7",
     "@eslint/eslintrc": "^3",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.4",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^30.0.0",
+    "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.1",
+    "husky": "^9.1.7",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
-    "msw": "^2.10.4",
+    "lint-staged": "^16.2.7",
     "ts-node": "^10.9.2",
     "typescript": "^5"
-  },
-  "msw": {
-    "workerDirectory": [
-      "public"
-    ]
   }
 }

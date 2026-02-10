@@ -1,89 +1,90 @@
 .page {
-  --gray-rgb: 0, 0, 0;
-  --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
-  --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
+	--gray-rgb: 0, 0, 0;
+	--gray-alpha-200: rgba(var(--gray-rgb), 0.08);
+	--gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-  --button-primary-hover: hsl(0, 0%, 22%);
-  --button-secondary-hover: hsl(0, 0%, 95%);
+	--button-primary-hover: hsl(0, 0%, 22%);
+	--button-secondary-hover: hsl(0, 0%, 95%);
 
-  min-height: 100svh;
-  box-sizing: border-box;
+	min-height: 100svh;
+	box-sizing: border-box;
 
-  /* 🎯 CORRECCIÓN CLAVE: Agrega un relleno superior igual a la altura del navbar (70px) */
-  padding-top: 70px;
+	padding-top: 70px;
 }
 
 @media (prefers-color-scheme: dark) {
-  .page {
-    --gray-rgb: 255, 255, 255;
-    --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
-    --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
+	.page {
+		--gray-rgb: 255, 255, 255;
+		--gray-alpha-200: rgba(var(--gray-rgb), 0.145);
+		--gray-alpha-100: rgba(var(--gray-rgb), 0.06);
 
-    --button-primary-hover: hsl(0, 0%, 80%);
-    --button-secondary-hover: hsl(0, 0%, 10%);
-  }
+		--button-primary-hover: hsl(0, 0%, 80%);
+		--button-secondary-hover: hsl(0, 0%, 10%);
+	}
 }
 
 .navbarList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .signinBtn {
-  padding: 9px 18px;
+	padding: 9px 18px;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+	font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
+	font-size: 14px;
+	font-weight: 600;
+	letter-spacing: -0.01em;
 
-  background-color: hsl(198, 38%, 19%);
-  color: hsl(198, 100%, 44%);
+	background-color: hsl(198, 38%, 19%);
+	color: hsl(198, 100%, 44%);
 
-  border-radius: 12px;
-  border: 1px solid hsla(0, 0%, 100%, 0.07);
+	border-radius: 12px;
+	border: 1px solid hsla(0, 0%, 100%, 0.07);
 
-  transition: background-color 0.25s ease, transform 0.2s ease;
+	transition:
+		background-color 0.25s ease,
+		transform 0.2s ease;
 }
 
 .signinBtn:hover {
-  background-color: hsl(198, 50%, 21%);
-  transform: translateY(-1px);
+	background-color: hsl(198, 50%, 21%);
+	transform: translateY(-1px);
 }
 
 .signinBtn:active {
-  transform: translateY(0px);
-  background: hsl(197, 48%, 16%);
+	transform: translateY(0px);
+	background: hsl(197, 48%, 16%);
 }
 
 .footer {
-  width: 100%;
-  padding: 32px 20px;
-  background: hsl(210, 40%, 98%);
-  border-top: 1px solid hsla(0, 0%, 0%, 0.06);
+	width: 100%;
+	padding: 32px 20px;
+	background: hsl(210, 40%, 98%);
+	border-top: 1px solid hsla(0, 0%, 0%, 0.06);
 }
 
 .text {
-  font-size: 14px;
-  font-weight: 500;
-  color: hsla(0, 0%, 0%, 0.55);
-  letter-spacing: -0.01em;
+	font-size: 14px;
+	font-weight: 500;
+	color: hsla(0, 0%, 0%, 0.55);
+	letter-spacing: -0.01em;
 
-  text-align: center;
+	text-align: center;
 }
 
 .supportedStores {
-  display: grid;
-  gap: 32px;
-  padding: 48px 20px;
-  background-color:hsl(0, 0%, 0%);
+	display: grid;
+	gap: 32px;
+	padding: 48px 20px;
+	background-color: hsl(0, 0%, 0%);
 }
 
 /* responsive */
 @media (max-width: 600px) {
-  .page {
-    padding: 32px;
-    padding-bottom: 80px;
-  }
+	.page {
+		padding: 32px;
+		padding-bottom: 80px;
+	}
 }

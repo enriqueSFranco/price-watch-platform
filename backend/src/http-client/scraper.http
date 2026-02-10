@@ -1,0 +1,23 @@
+POST http://localhost:3000/api/scraper/preview HTTP/1.1
+Content-Type: application/json
+
+{
+  "url": "https://www.liverpool.com.mx/tienda/pdp/consola-ps5-de-1-tb-edici%C3%B3n-limitada-ghost-of-yotei-playstation/1185699265?skuid=1185699265",
+  "userId": "cf639aa3-84a8-483c-b4db-704ca230ed67"
+}
+
+
+POST http://localhost:3000/api/scraper HTTP/1.1
+Content-Type: application/json
+
+{
+  "url": "https://www.amazon.com.mx/ATTACK-SHARK-M87-Inal%C3%A1mbrico-Personalizados/dp/B0D6YZDS8M/ref=sxin_16_pa_sp_search_thematic_sspa?content-id=amzn1.sym.d5a315c2-d5d8-4266-9a5d-3be4137f571c%3Aamzn1.sym.d5a315c2-d5d8-4266-9a5d-3be4137f571c&crid=1UO9H8BF2FO2U&cv_ct_cx=teclado%2Bmecanico&keywords=teclado%2Bmecanico&pd_rd_i=B0D6YZDS8M&pd_rd_r=ccf502fe-b42e-4fb8-9750-422c0d9d51ec&pd_rd_w=jTwol&pd_rd_wg=klxy6&pf_rd_p=d5a315c2-d5d8-4266-9a5d-3be4137f571c&pf_rd_r=WW06H8JNNS8AP3APCCCW&qid=1761345782&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sprefix=teclado%2Bmeca%2Caps%2C147&sr=1-1-fc613efb-89a5-4ecc-a266-4feb7aba5db9-spons&ufe=app_do%3Aamzn1.fos.db4f1a57-87f1-43c5-9a39-0cdca6036b57&sp_csd=d2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM&th=1",
+  "userId": "cf639aa3-84a8-483c-b4db-704ca230ed67"
+}
+
+POST http://localhost:3000/api/scraper HTTP/1.1
+Content-Type: application/json
+{
+  "url": "https://www.sears.com.mx/producto/2710548/consola-playstation-5-modelo-slim-con-2-juegos-version-estandar",
+  "userId": "cf639aa3-84a8-483c-b4db-704ca230ed67"
+}

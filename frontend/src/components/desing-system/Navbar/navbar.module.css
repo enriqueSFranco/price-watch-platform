@@ -1,0 +1,26 @@
+.navbar {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 70px;
+	padding: 0 16px;
+	border-bottom: 1px solid hsla(0, 0%, 0%, 0.06);
+	background-color: hsl(0, 0%, 0%);
+	z-index: 100;
+	transition:
+		background-color 0.3s ease,
+		backdrop-filter 0.3s ease;
+}
+
+.navbarTransparent {
+	background-color: hsl(0, 0%, 0%);
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+.navbarScrolled {
+	background: hsl(0, 0%, 11%); /* Color de fondo base, puede ser transparente o semitransparente */
+	backdrop-filter: saturate(180%) blur(20px);
+	-webkit-backdrop-filter: saturate(180%) blur(20px);
+}

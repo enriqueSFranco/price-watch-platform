@@ -1,0 +1,41 @@
+# --- 1. CONFIGURACIÓN INICIAL (Variables) ---
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkYmJmN2ZhZi1hZTdiLTQ1ZmUtYjQ5Mi0zMTI4MTQxMzJjMzMiLCJpYXQiOjE3NjIyNzcwOTYsImV4cCI6MTc2Mjg4MTg5Nn0.dMSs8uOOsPcD6SLKECBem5UslwWOMyk7dMLq9JFwSoU
+@testProductId = 123456789 # ID de un producto existente para asociar la alerta
+@alertId = # Se llenará con el ID de la alerta creada en el POST
+
+
+###
+# @name CreateAlert
+# POST /api/alerts - Crear una nueva regla de alerta
+POST {{baseUrl}}/alerts
+Authorization: Bearer {{token}}
+Content-Type: "application/json"
+
+{
+  "product_id": "{{testProductId}}",
+  "trigger_condition": "max_price",
+  "value": 4000.00,
+  "notification_method": "email",
+  "recipient": "user@example.com",
+  "is_active": true
+}
+
+// > {% client.global.set("alertId", response.body.id); %}
+
+###
+# @name ListAlerts
+# GET /api/alerts - Listar todas las reglas de alerta del usuario
+GET {{baseUrl}}/alerts
+Authorization: Bearer {{token}}
+
+
+###
+
+# @name DeleteAlert
+# DELETE /api/alerts/:id - Borrar una regla de alerta
+# Nota: La primera vez que se ejecuta, el ID debe ser llenado manualmente o
+# por el script del POST anterior.
+DELETE {{baseUrl}}/alerts/{{alertId}}
+Authorization: Bearer {{token}}
+

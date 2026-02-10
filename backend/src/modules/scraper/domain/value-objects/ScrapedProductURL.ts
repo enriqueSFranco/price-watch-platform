@@ -1,4 +1,4 @@
-import { Store } from "../../infrastructure/store.enums";
+import { Store } from "../store.enums";
 
 const DOMAIN_MAP: { [key: string]: Store } = {
   liverpool: Store.Liverpool,
@@ -22,6 +22,10 @@ export class ScrapedProductURL {
     return new URL(this.value);
   }
 
+  get Value() {
+    return this.value
+  }
+
   /**
    * @description Extrae el nombre del sitio web de una URL de producto
    * Esta función es fundamental para saber que scraper utilizar
@@ -38,7 +42,7 @@ export class ScrapedProductURL {
     return parts[parts.length - 2];
   }
 
-  public getStore(): Store | null {
+  public get Store(): Store | null {
     const slDomain = this.getSecondLevelDomain();
 
     if (slDomain === "") return null;
