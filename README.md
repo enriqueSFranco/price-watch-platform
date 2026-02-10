@@ -127,14 +127,3 @@
         * Si los tests pasan, que se construyan las imágenes Docker (o builds) y se desplieguen.
 * **5. Documentación del Proyecto:**
     * Actualiza tu `README.md` en GitHub con instrucciones de instalación/ejecución, descripción de la arquitectura, demo, y lecciones aprendidas.
-
----
-
-### ¡Consejos Adicionales para el Éxito!
-
-* **Empieza pequeño:** No intentes construir todo de golpe. Sigue este roadmap fase por fase. Cada fase completada es un hito y una habilidad que puedes poner en tu CV.
-* **Control de Versiones (Git):** Usa Git a diario. Haz commits pequeños y significativos.
-* **Aprende de la Documentación:** Familiarízate con la documentación de Spring Boot, Next.js, PostgreSQL, y las librerías de scraping.
-* **Recursos Online:** Utiliza tutoriales y cursos si te sientes atascado en alguna parte.
-* **Comunidad:** No dudes en buscar ayuda en Stack Overflow, foros de React/Spring Boot.
-* **¡Diviértete!** Elegiste este proyecto porque te parece interesante. Mantén esa motivación.
