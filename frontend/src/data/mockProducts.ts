@@ -1,0 +1,85 @@
+import type { Product } from '@/modules/products/domain/Product.schema';
+import { v4 as uuidv4 } from 'uuid';
+
+export const mockProducts: Product[] = [
+  // Producto 1: Smartwatch
+  {
+    id: uuidv4(),
+    userId: uuidv4(),
+    name: "Smartwatch Deportivo X400 con GPS",
+    initialPrice: 150.00,
+    currentPrice: 129.99,
+    url: "https://www.amazon.com/dp/B0CKK2R2W2",
+    store: "liverpool",
+    imageUrl: "https://placehold.co/400x400/2563EB/FFFFFF?text=Smartwatch",
+    inStock: true,
+    monitoringStatus: "active",
+    priceHistory: [{ price: 150.00, date: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) }],
+    lastScrapedAt: new Date(),
+    createdAt: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
+  },
+  // Producto 2: Auriculares (agotado)
+  {
+    id: uuidv4(),
+    userId: uuidv4(),
+    name: "Auriculares Inalámbricos Noise Cancelling",
+    initialPrice: 99.99,
+    currentPrice: 99.99,
+    url: "https://www.bestbuy.com/headphones",
+    store: "amazon",
+    imageUrl: "https://placehold.co/400x400/DC2626/FFFFFF?text=Headphones",
+    inStock: false,
+    monitoringStatus: "paused",
+    priceHistory: [{ price: 109.99, date: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) }],
+    lastScrapedAt: null,
+    createdAt: new Date(Date.now() - 120 * 24 * 60 * 60 * 1000),
+  },
+  // Producto 3: Teclado Mecánico
+  {
+    id: uuidv4(),
+    userId: uuidv4(),
+    name: "Teclado Mecánico Retroiluminado",
+    initialPrice: null,
+    currentPrice: 55.50,
+    url: "https://www.pccomponentes.com/teclado",
+    store: "amazon",
+    imageUrl: "https://placehold.co/400x400/059669/FFFFFF?text=Keyboard",
+    inStock: true,
+    monitoringStatus: "active",
+    priceHistory: [{ price: 59.99, date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000) }],
+    lastScrapedAt: new Date(),
+    createdAt: new Date(Date.now() - 45 * 24 * 60 * 60 * 1000),
+  },
+  // Producto 4: Monitor Curvo
+  {
+    id: uuidv4(),
+    userId: uuidv4(),
+    name: "Monitor Curvo 27 Pulgadas 144Hz",
+    initialPrice: 399.99,
+    currentPrice: 349.99,
+    url: "https://www.newegg.com/monitor",
+    store: "amazon",
+    imageUrl: "https://placehold.co/400x400/F97316/FFFFFF?text=Monitor",
+    inStock: true,
+    monitoringStatus: "active",
+    priceHistory: [{ price: 399.99, date: new Date(Date.now() - 180 * 24 * 60 * 60 * 1000) }],
+    lastScrapedAt: new Date(),
+    createdAt: new Date(Date.now() - 200 * 24 * 60 * 60 * 1000),
+  },
+  // Producto 5: Sartenes
+  {
+    id: uuidv4(),
+    userId: uuidv4(),
+    name: "Juego de Sartenes Antiadherentes (5 Pcs)",
+    initialPrice: 75.00,
+    currentPrice: 60.50,
+    url: "https://www.elcorteingles.es/sartenes",
+    store: "liverpool",
+    imageUrl: "https://placehold.co/400x400/9333EA/FFFFFF?text=Pans",
+    inStock: true,
+    monitoringStatus: "active",
+    priceHistory: [{ price: 75.00, date: new Date(Date.now() - 70 * 24 * 60 * 60 * 1000) }],
+    lastScrapedAt: new Date(),
+    createdAt: new Date(Date.now() - 100 * 24 * 60 * 60 * 1000),
+  }
+];
