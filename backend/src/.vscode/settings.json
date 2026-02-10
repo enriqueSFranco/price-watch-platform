@@ -1,0 +1,16 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "version": "v1"
+    },
+    "local": {
+      "version": "v1",
+      "baseUrl": "http://localhost:3000/api/v1"
+    },
+    "production": {
+      "host": "example.com",
+      "token": "{{$shared prodToken}}",
+      "secretKey": "prodSecret"
+    }
+  }
+}

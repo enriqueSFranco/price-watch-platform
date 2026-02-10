@@ -1,0 +1,60 @@
+# --- 1. CONFIGURACIÓN INICIAL (Variables de Entorno) ---
+@baseUrl = http://localhost:3000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkYmJmN2ZhZi1hZTdiLTQ1ZmUtYjQ5Mi0zMTI4MTQxMzJjMzMiLCJpYXQiOjE3NjIyNzcwOTYsImV4cCI6MTc2Mjg4MTg5Nn0.dMSs8uOOsPcD6SLKECBem5UslwWOMyk7dMLq9JFwSoU
+@productId = 123456789
+
+###
+# @name ListProducts
+# GET /api/products - Listar productos
+GET http://localhost:3000/api/products HTTP/1.1
+
+
+# @name GetSpecificProduct
+# GET /api/products/:id - Obtener un producto
+GET {{baseUrl}}/products/{{productId}}
+Authorization: Bearer {{token}}
+
+# agregar un producto
+POST {{baseUrl}}/products
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "url": "...",
+  "name": "...",
+  "provider": "Amazon",
+  "price": 2499,
+  "imageUrl": "...",
+  "inStock": true
+}
+
+
+# @name DeleteProduct
+# DELETE /api/products/:id - Eliminar (asegúrate de que el cascade funcione)
+DELETE {{baseUrl}}/products/:id
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+# @name PauseMonitoring
+# PATCH /api/products/:id/pause - Pausar monitoreo
+PATCH {{baseUrl}}/products/{{productId}}/pause
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+# @name ResumeMonitoring
+# PATCH /api/products/:id/resume - Reanudar monitoreo
+PATCH {{baseUrl}}/products/{{productId}}/resume
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}
+
+
+# Obtener detalles de un producto específico
+PATCH {{baseUrl}}/products/{{productId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{}

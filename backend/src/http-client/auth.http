@@ -1,0 +1,21 @@
+# --- 1. CONFIGURACIÓN INICIAL (Variables) ---
+@baseUrl = http://localhost:3000/api
+
+POST http://localhost:3000/api/register
+Content-Type: application/json
+
+{
+  "email": "carlos@test.com",
+  "password": "SuperPass123"
+}
+
+POST http://localhost:3000/api/signin
+Content-Type: application/json
+
+{
+  "email": "carlos@test.com",
+  "password": "SuperPass123"
+}
+
+
+POST http://localhost:3000/api/logout

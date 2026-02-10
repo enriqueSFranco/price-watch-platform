@@ -1,0 +1,6 @@
+.ellipsis {
+  padding: 8px 12px;
+  color: var(--text-tertiary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+}
