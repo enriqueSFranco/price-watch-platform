@@ -3,17 +3,14 @@
   --gray-alpha-200: rgba(var(--gray-rgb), 0.08);
   --gray-alpha-100: rgba(var(--gray-rgb), 0.05);
 
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
+  --button-primary-hover: hsl(0, 0%, 22%);
+  --button-secondary-hover: hsl(0, 0%, 95%);
 
-  display: grid;
-  grid-template-rows: 20px 1fr 20px;
-  align-items: center;
-  justify-items: center;
   min-height: 100svh;
-  padding: 80px;
-  gap: 64px;
-  font-family: var(--font-geist-sans);
+  box-sizing: border-box;
+
+  /* 🎯 CORRECCIÓN CLAVE: Agrega un relleno superior igual a la altura del navbar (70px) */
+  padding-top: 70px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,146 +19,71 @@
     --gray-alpha-200: rgba(var(--gray-rgb), 0.145);
     --gray-alpha-100: rgba(var(--gray-rgb), 0.06);
 
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
+    --button-primary-hover: hsl(0, 0%, 80%);
+    --button-secondary-hover: hsl(0, 0%, 10%);
   }
 }
 
-.main {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  grid-row-start: 2;
-}
-
-.main ol {
-  font-family: var(--font-geist-mono);
-  padding-left: 0;
+.navbarList {
+  list-style: none;
+  padding: 0;
   margin: 0;
+}
+
+.signinBtn {
+  padding: 9px 18px;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Inter", "Helvetica Neue", Arial, sans-serif;
   font-size: 14px;
-  line-height: 24px;
-  letter-spacing: -0.01em;
-  list-style-position: inside;
-}
-
-.main li:not(:last-of-type) {
-  margin-bottom: 8px;
-}
-
-.main code {
-  font-family: inherit;
-  background: var(--gray-alpha-100);
-  padding: 2px 4px;
-  border-radius: 4px;
   font-weight: 600;
+  letter-spacing: -0.01em;
+
+  background-color: hsl(198, 38%, 19%);
+  color: hsl(198, 100%, 44%);
+
+  border-radius: 12px;
+  border: 1px solid hsla(0, 0%, 100%, 0.07);
+
+  transition: background-color 0.25s ease, transform 0.2s ease;
 }
 
-.ctas {
-  display: flex;
-  gap: 16px;
+.signinBtn:hover {
+  background-color: hsl(198, 50%, 21%);
+  transform: translateY(-1px);
 }
 
-.ctas a {
-  appearance: none;
-  border-radius: 128px;
-  height: 48px;
-  padding: 0 20px;
-  border: 1px solid transparent;
-  transition:
-    background 0.2s,
-    color 0.2s,
-    border-color 0.2s;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  line-height: 20px;
-  font-weight: 500;
-}
-
-a.primary {
-  background: var(--foreground);
-  color: var(--background);
-  gap: 8px;
-}
-
-a.secondary {
-  border-color: var(--gray-alpha-200);
-  min-width: 158px;
+.signinBtn:active {
+  transform: translateY(0px);
+  background: hsl(197, 48%, 16%);
 }
 
 .footer {
-  grid-row-start: 3;
-  display: flex;
-  gap: 24px;
+  width: 100%;
+  padding: 32px 20px;
+  background: hsl(210, 40%, 98%);
+  border-top: 1px solid hsla(0, 0%, 0%, 0.06);
 }
 
-.footer a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.text {
+  font-size: 14px;
+  font-weight: 500;
+  color: hsla(0, 0%, 0%, 0.55);
+  letter-spacing: -0.01em;
+
+  text-align: center;
 }
 
-.footer img {
-  flex-shrink: 0;
+.supportedStores {
+  display: grid;
+  gap: 32px;
+  padding: 48px 20px;
+  background-color:hsl(0, 0%, 0%);
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-
-  .footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-}
-
+/* responsive */
 @media (max-width: 600px) {
   .page {
     padding: 32px;
     padding-bottom: 80px;
-  }
-
-  .main {
-    align-items: center;
-  }
-
-  .main ol {
-    text-align: center;
-  }
-
-  .ctas {
-    flex-direction: column;
-  }
-
-  .ctas a {
-    font-size: 14px;
-    height: 40px;
-    padding: 0 16px;
-  }
-
-  a.secondary {
-    min-width: auto;
-  }
-
-  .footer {
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
   }
 }
