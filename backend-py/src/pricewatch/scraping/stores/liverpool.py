@@ -24,7 +24,7 @@ from parsel import Selector
 from pydantic import HttpUrl, ValidationError
 
 from pricewatch.scraping.errors import ParseError
-from pricewatch.scraping.models import ScrapedProduct, Store
+from pricewatch.scraping.models import Availability, ScrapedProduct, Store
 from pricewatch.scraping.parsing import parse_price, text_of
 
 # SELECTORES
@@ -140,7 +140,8 @@ def parse_product(html: str, url: str) -> ScrapedProduct:
             price=price,
             original_price=original,
             image_url=extract_image(sel),
-            in_stock=None,  # TODO: Revisar la estructura del HTML de un producto que no tenga stock
+            # TODO: Revisar la estructura del HTML de un producto que no tenga stock
+            availability=Availability.UNKNOWN,
         )
     except ValidationError as exc:
         # Datos presentes pero inválidos (por ejemplo, un precio de 0).

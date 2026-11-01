@@ -3,7 +3,7 @@ from decimal import Decimal
 import pytest
 from pydantic import ValidationError
 
-from pricewatch.scraping.models import ScrapedProduct, Store
+from pricewatch.scraping.models import Availability, ScrapedProduct, Store
 
 
 def make_product(**overrides: object) -> ScrapedProduct:
@@ -24,8 +24,14 @@ def test_valid_product_is_created() -> None:
     product = make_product()
 
     assert product.price == Decimal("499.00")
-    assert product.in_stock is None  # "no sé" es el valor por defecto
+    assert product.availability is Availability.UNKNOWN  # "no sé" es el valor por defecto
     assert product.original_price is None
+
+
+def test_availability_accepts_presale() -> None:
+    product = make_product(availability=Availability.PRESALE)
+
+    assert product.availability is Availability.PRESALE
 
 
 def test_price_must_be_positive() -> None:

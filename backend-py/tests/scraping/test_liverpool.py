@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from decimal import Decimal
+from pathlib import Path
 
 import pytest
 from parsel import Selector
@@ -10,6 +13,11 @@ from pricewatch.scraping.stores.liverpool import (
     extract_prices,
     parse_product,
 )
+
+# Carpeta de fixtures. __file__ es la ruta de ESTE archivo; subir dos niveles
+# (scraping/ -> tests/) y entrar a fixtures/ funciona sin importar desde dónde
+# se ejecute pytest.
+FIXTURES = Path(__file__).parent.parent / "fixtures"
 
 
 def make_selector(html: str) -> Selector:
@@ -261,3 +269,22 @@ def test_parse_product_with_zero_price_raises() -> None:
     # El precio existe, pero ScrapedProduct lo rechaza (price > 0): ParseError.
     with pytest.raises(ParseError):
         parse_product(page(TITLE, zero_price), URL)
+
+
+def test_real_page_with_discount() -> None:
+    """Página real de Liverpool guardada del navegador (DOM ya renderizado).
+
+    Los valores esperados se copiaron a mano de lo que muestra la página en el
+    navegador, no de la salida del parser: si los copiáramos del parser, el test
+    compararía el código consigo mismo y siempre pasaría.
+    """
+
+    html = (FIXTURES / "liverpool_discount.html").read_text(encoding="utf-8")
+
+    product = parse_product(html, URL)
+
+    assert product.name == "Pokémon Lego Pokémon Munchlax 72150 72150"
+    assert product.price == Decimal("1359.20")
+    assert product.original_price == Decimal("1699.00")
+    assert product.image_url is not None
+    assert product.image_url.startswith("https://")
