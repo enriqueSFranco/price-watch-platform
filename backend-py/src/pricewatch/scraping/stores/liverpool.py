@@ -70,6 +70,10 @@ IMAGE_SELECTORS = (
     'meta[property="og:image"]',  # respaldo
 )
 
+PRESALE_MARKERS = (
+    '[data-testid="flag-presale"]',  # etiqueta "Preventa" junto al producto
+    '[data-testid="presale-icon"]',  # ícono dentro del bloque de entrega
+)
 
 def extract_name(sel: Selector) -> str | None:
     """Devuelve el nombre del producto, o None si ningún selector lo encuentra."""
@@ -101,6 +105,27 @@ def extract_image(sel: Selector) -> str | None:
             return src.strip()
 
     return None
+
+def extract_availability(sel: Selector) -> Availability:
+    """
+        Determina la disponibilidad que la página DEMUESTRA, y nada más.
+
+        Hoy solo hay evidencia de un estado: la preventa. Por eso esta función solo
+        devuelve PRESALE o UNKNOWN. IN_STOCK y OUT_OF_STOCK existen en el contrato
+        pero Liverpool no los produce todavía: no sabemos cómo se ven en el HTML y
+        adivinarlo contaminaría las alertas de "volvió el stock".
+
+        Que no haya marca de preventa NO significa que haya stock: significa que no
+        sabemos. Por eso el valor por defecto es UNKNOWN y no IN_STOCK.
+
+        Limitación: las marcas se validaron con UNA página de preventa. Si
+        existe una preventa sin ninguna de las dos, saldrá UNKNOWN. Falla hacia el
+        lado seguro: UNKNOWN nunca dispara ni cancela una alerta.
+
+    """
+    if any(sel.css(css) for css in PRESALE_MARKERS):
+        return Availability.PRESALE
+    return Availability.UNKNOWN
 
 
 def parse_product(html: str, url: str) -> ScrapedProduct:
@@ -141,7 +166,7 @@ def parse_product(html: str, url: str) -> ScrapedProduct:
             original_price=original,
             image_url=extract_image(sel),
             # TODO: Revisar la estructura del HTML de un producto que no tenga stock
-            availability=Availability.UNKNOWN,
+            availability=extract_availability(sel),
         )
     except ValidationError as exc:
         # Datos presentes pero inválidos (por ejemplo, un precio de 0).

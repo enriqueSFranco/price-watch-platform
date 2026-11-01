@@ -7,7 +7,9 @@ import pytest
 from parsel import Selector
 
 from pricewatch.scraping.errors import ParseError
+from pricewatch.scraping.models import Availability
 from pricewatch.scraping.stores.liverpool import (
+    extract_availability,
     extract_image,
     extract_name,
     extract_prices,
@@ -19,10 +21,7 @@ from pricewatch.scraping.stores.liverpool import (
 # se ejecute pytest.
 FIXTURES = Path(__file__).parent.parent / "fixtures"
 
-
-def make_selector(html: str) -> Selector:
-    return Selector(text=f"<html><body>{html}</body></html>")
-
+URL = "https://www.liverpool.com.mx/tienda/pdp/pok%c3%a9mon-lego-pok%c3%a9mon-pok%c3%a9bola-grandes-momentos-del-entrenador-72154-72154/1200443809"
 
 PRICE_REGULAR = """
 <div class="flex items-center" data-testid="1200443809-configurator-price">
@@ -78,34 +77,26 @@ PRICE_INCOHERENT = """
 """
 
 
-def test_prices_without_discount() -> None:
-    price, original = extract_prices(make_selector(PRICE_REGULAR))
+# Fragmentos de la página de preventa (HTML real, recortado a lo relevante).
+PRESALE_FLAG_HTML = """
+<div class="flex items-center gap-x-1 bg-carbon-50 text-base font-bold py-0.5 px-2 rounded"
+    data-testid="flag-presale"><span>Preventa</span></div>
+"""
 
-    assert price == Decimal("6999.00")
-    assert original is None
+PRESALE_ICON_HTML = """
+<div data-testid="product-configurator-delivery">
+  <span class="24px material-icons notranslate" aria-hidden="true"
+        data-testid="presale-icon">calendar_today</span>
+  <p>Fecha de lanzamiento:</p><p>19 de noviembre de 2026</p>
+</div>
+"""
 
+# La palabra "Preventa" SIN la marca estructural: por ejemplo, en una tarjeta de
+# producto recomendado. No debe contar como preventa del producto principal.
+PRESALE_WORD_WITHOUT_MARKER = """
+<section><h2>Recomendados</h2><p>Otro producto en Preventa</p></section>
+"""
 
-def test_prices_with_discount() -> None:
-    price, original = extract_prices(make_selector(PRICE_DISCOUNT))
-
-    assert price == Decimal("1359.20")
-    assert original == Decimal("1699.00")
-
-
-def test_broken_discount_block_does_not_fall_back_to_original_price() -> None:
-    price, _ = extract_prices(make_selector(PRICE_DISCOUNT_BROKEN))
-
-    assert price is None
-
-
-def test_page_without_price_returns_none() -> None:
-    price, original = extract_prices(make_selector("<h1>nada</h1>"))
-
-    assert price is None
-    assert original is None
-
-
-URL = "https://www.liverpool.com.mx/tienda/pdp/pok%c3%a9mon-lego-pok%c3%a9mon-pok%c3%a9bola-grandes-momentos-del-entrenador-72154-72154/1200443809"
 
 TITLE = """
 <div
@@ -192,6 +183,73 @@ GALLERY_DESKTOP_ONLY = """
 
 OG_IMAGE = '<meta property="og:image" content="https://sp424.liverpool.com.mx/i/1200638987.jpg">'
 
+
+def make_selector(html: str) -> Selector:
+    return Selector(text=f"<html><body>{html}</body></html>")
+
+def test_prices_without_discount() -> None:
+    price, original = extract_prices(make_selector(PRICE_REGULAR))
+
+    assert price == Decimal("6999.00")
+    assert original is None
+
+
+def test_prices_with_discount() -> None:
+    price, original = extract_prices(make_selector(PRICE_DISCOUNT))
+
+    assert price == Decimal("1359.20")
+    assert original == Decimal("1699.00")
+
+
+def test_broken_discount_block_does_not_fall_back_to_original_price() -> None:
+    price, _ = extract_prices(make_selector(PRICE_DISCOUNT_BROKEN))
+
+    assert price is None
+
+
+def test_page_without_price_returns_none() -> None:
+    price, original = extract_prices(make_selector("<h1>nada</h1>"))
+
+    assert price is None
+    assert original is None
+
+def test_availability_presale_from_flag() -> None:
+    sel = make_selector(PRESALE_FLAG_HTML)
+
+    assert extract_availability(sel) is Availability.PRESALE
+
+def test_availability_presale_from_icon() -> None:
+    sel = make_selector(PRESALE_ICON_HTML)
+
+    assert extract_availability(sel) is Availability.PRESALE
+
+def test_availability_is_unknown_without_evidence() -> None:
+    # Sin marca NO asumimos stock: sin evidencia, el valor es UNKNOWN.
+    sel = make_selector(PRICE_REGULAR + GALLERY)
+
+    assert extract_availability(sel) is Availability.UNKNOWN
+
+
+def test_availability_ignores_the_word_presale_without_marker() -> None:
+    sel = make_selector(PRESALE_WORD_WITHOUT_MARKER)
+
+    assert extract_availability(sel) is Availability.UNKNOWN
+
+
+def test_real_presale_page_is_detected() -> None:
+    html = (FIXTURES / "liverpool_presale.html").read_text(encoding="utf-8")
+
+    product = parse_product(html, URL)
+
+    assert product.availability is Availability.PRESALE
+
+def test_real_regular_page_is_not_presale() -> None:
+    """Control negativo permanente: una página normal NO debe salir como preventa."""
+    html = (FIXTURES / "liverpool_discount.html").read_text(encoding="utf-8")
+
+    product = parse_product(html, URL)
+
+    assert product.availability is Availability.UNKNOWN
 
 def page(*blocks: str) -> str:
     return f"<html><body>{''.join(blocks)}</body></html>"
