@@ -45,6 +45,7 @@ python_version = "3.13"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
+asyncio_default_fixture_loop_scope = "function"
 markers = [
     "browser: abre un Chromium real (mas lento); omitir con -m 'not browser'",
 ]
