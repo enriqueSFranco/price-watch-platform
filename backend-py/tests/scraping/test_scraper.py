@@ -1,12 +1,19 @@
+import socket
+import threading
+from collections.abc import Iterator
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
 import pytest
 
+from pricewatch.scraping.browser import BrowserSession
 from pricewatch.scraping.errors import (
     BlockedError,
     NavigationError,
+    ParseError,
     ProductNotFoundError,
     ScraperError,
 )
-from pricewatch.scraping.scraper import raise_for_status
+from pricewatch.scraping.scraper import fetch_html, raise_for_status
 
 
 @pytest.mark.parametrize(
@@ -48,3 +55,100 @@ def test_only_server_failures_are_retryable() -> None:
                 retryable.append(status)
 
     assert retryable == [500, 502, 504]
+
+
+# --- fetch_html: navegador real contra un servidor LOCAL ---
+
+PRODUCT_PAGE = '<html><body><div id="ready">producto</div></body></html>'
+OTHER_PAGE = "<html><body><p>una página que no es de producto</p></body></html>"
+
+ROUTES = {
+    "/ok": (200, PRODUCT_PAGE),
+    "/other": (200, OTHER_PAGE),
+    "/missing": (404, "no existe"),
+    "/forbidden": (403, "bloqueado"),
+    "/boom": (500, "error"),
+}
+
+
+class _Handler(BaseHTTPRequestHandler):
+    def do_GET(self) -> None:
+        status, body = ROUTES.get(self.path, (404, "no existe"))
+        payload = body.encode()
+        self.send_response(status)
+        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
+    def log_message(self, format: str, *args: object) -> None:
+        pass  # silencia el log de cada petición
+
+
+@pytest.fixture(scope="module")
+def server_url() -> Iterator[str]:
+    """Servidor HTTP local, compartido por el módulo y apagado al terminar.
+
+    El puerto 0 le pide al sistema operativo un puerto libre, así los tests no
+    chocan con nada que ya esté corriendo en tu máquina.
+    """
+    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
+    thread = threading.Thread(target=server.serve_forever, daemon=True)
+    thread.start()
+    try:
+        yield f"http://127.0.0.1:{server.server_address[1]}"
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
+def _free_port() -> int:
+    """Un puerto en el que nadie escucha, para simular 'conexión rechazada'."""
+    with socket.socket() as sock:
+        sock.bind(("127.0.0.1", 0))
+        return int(sock.getsockname()[1])
+
+
+@pytest.mark.browser
+async def test_fetch_html_returns_rendered_html(server_url: str) -> None:
+    async with BrowserSession() as session, session.page() as page:
+        html = await fetch_html(page, f"{server_url}/ok", "#ready")
+
+    assert 'id="ready"' in html
+
+
+@pytest.mark.browser
+@pytest.mark.parametrize(
+    ("path", "expected"),
+    [
+        ("/missing", ProductNotFoundError),
+        ("/forbidden", BlockedError),
+        ("/boom", NavigationError),
+    ],
+)
+async def test_fetch_html_maps_http_status_to_typed_error(
+    server_url: str, path: str, expected: type[ScraperError]
+) -> None:
+    # Con el timeout por defecto (10 s): si el código HTTP no se revisara ANTES de
+    # esperar al selector, estas pruebas tardarían 10 s y fallarían con ParseError.
+    async with BrowserSession() as session, session.page() as page:
+        with pytest.raises(expected):
+            await fetch_html(page, f"{server_url}{path}", "#ready")
+
+
+@pytest.mark.browser
+async def test_fetch_html_raises_parse_error_when_ready_selector_never_appears(
+    server_url: str,
+) -> None:
+    async with BrowserSession() as session, session.page() as page:
+        with pytest.raises(ParseError, match="#ready"):
+            await fetch_html(page, f"{server_url}/other", "#ready", ready_timeout_ms=300)
+
+
+@pytest.mark.browser
+async def test_fetch_html_raises_navigation_error_when_connection_is_refused() -> None:
+    url = f"http://127.0.0.1:{_free_port()}/"
+
+    async with BrowserSession() as session, session.page() as page:
+        with pytest.raises(NavigationError):
+            await fetch_html(page, url, "#ready")
