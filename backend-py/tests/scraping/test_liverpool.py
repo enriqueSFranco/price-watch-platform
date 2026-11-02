@@ -187,6 +187,7 @@ OG_IMAGE = '<meta property="og:image" content="https://sp424.liverpool.com.mx/i/
 def make_selector(html: str) -> Selector:
     return Selector(text=f"<html><body>{html}</body></html>")
 
+
 def test_prices_without_discount() -> None:
     price, original = extract_prices(make_selector(PRICE_REGULAR))
 
@@ -213,15 +214,18 @@ def test_page_without_price_returns_none() -> None:
     assert price is None
     assert original is None
 
+
 def test_availability_presale_from_flag() -> None:
     sel = make_selector(PRESALE_FLAG_HTML)
 
     assert extract_availability(sel) is Availability.PRESALE
 
+
 def test_availability_presale_from_icon() -> None:
     sel = make_selector(PRESALE_ICON_HTML)
 
     assert extract_availability(sel) is Availability.PRESALE
+
 
 def test_availability_is_unknown_without_evidence() -> None:
     # Sin marca NO asumimos stock: sin evidencia, el valor es UNKNOWN.
@@ -243,6 +247,7 @@ def test_real_presale_page_is_detected() -> None:
 
     assert product.availability is Availability.PRESALE
 
+
 def test_real_regular_page_is_not_presale() -> None:
     """Control negativo permanente: una página normal NO debe salir como preventa."""
     html = (FIXTURES / "liverpool_discount.html").read_text(encoding="utf-8")
@@ -250,6 +255,7 @@ def test_real_regular_page_is_not_presale() -> None:
     product = parse_product(html, URL)
 
     assert product.availability is Availability.UNKNOWN
+
 
 def page(*blocks: str) -> str:
     return f"<html><body>{''.join(blocks)}</body></html>"
