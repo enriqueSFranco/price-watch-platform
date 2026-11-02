@@ -21,16 +21,16 @@ las llama (el parser de la tienda sabe que sin precio no hay producto).
 
 
 def parse_price(raw: str | None) -> Decimal | None:
-    """ 
-        Convierte el texto de un precio en Decimal.
+    """
+    Convierte el texto de un precio en Decimal.
 
-        Asume el formato de México: la coma separa miles y el punto separa decimales.
-        NO sirve para formatos europeos como "1.299,00".
-        '$1,299.00' -> Decimal('1299.00'). Formato es-MX: coma = miles, punto = decimales.
+    Asume el formato de México: la coma separa miles y el punto separa decimales.
+    NO sirve para formatos europeos como "1.299,00".
+    '$1,299.00' -> Decimal('1299.00'). Formato es-MX: coma = miles, punto = decimales.
 
-        Args:
-            - raw
-    
+    Args:
+        - raw
+
     """
     if not raw:
         return None
@@ -42,16 +42,17 @@ def parse_price(raw: str | None) -> Decimal | None:
 
     return Decimal(match.group().replace(",", ""))
 
+
 def text_of(sel: Selector, css: str) -> str | None:
     """
-        Devuelve el texto completo del primero elemento que coincide con el selector css.
+    Devuelve el texto completo del primero elemento que coincide con el selector css.
 
-        Args:
-            - sel
-            - css
+    Args:
+        - sel
+        - css
 
-        Returns:
-            None si nada coincide o so el elemento no tiene texto
+    Returns:
+        None si nada coincide o so el elemento no tiene texto
     """
 
     val = sel.css(css).xpath("string(.)").get()
