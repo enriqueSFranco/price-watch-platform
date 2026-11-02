@@ -77,8 +77,8 @@ class BrowserSession:
                 await page.goto(url)
     """
 
-    def __init__(self, *, headdles: bool = True) -> None:
-        self.headdles = headdles
+    def __init__(self, *, headless: bool = True) -> None:
+        self.headless = headless
         self._playwright: Playwright | None = None
         self._browser: Browser | None = None
 
@@ -88,7 +88,7 @@ class BrowserSession:
 
         try:
             # abrir el navegador de chrome
-            self._browser = await self._playwright.chromium.launch(headless=self.headdles)
+            self._browser = await self._playwright.chromium.launch(headless=self.headless)
         except BaseException:
             # Si __aenter__ falla, Python NO llama a __aexit__. Sin este bloque,
             # el proceso de Playwright quedaría vivo.
