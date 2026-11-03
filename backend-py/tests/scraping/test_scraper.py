@@ -1,7 +1,4 @@
 import socket
-import threading
-from collections.abc import Iterator
-from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 import pytest
 
@@ -58,48 +55,6 @@ def test_only_server_failures_are_retryable() -> None:
 
 
 # --- fetch_html: navegador real contra un servidor LOCAL ---
-
-PRODUCT_PAGE = '<html><body><div id="ready">producto</div></body></html>'
-OTHER_PAGE = "<html><body><p>una página que no es de producto</p></body></html>"
-
-ROUTES = {
-    "/ok": (200, PRODUCT_PAGE),
-    "/other": (200, OTHER_PAGE),
-    "/missing": (404, "no existe"),
-    "/forbidden": (403, "bloqueado"),
-    "/boom": (500, "error"),
-}
-
-
-class _Handler(BaseHTTPRequestHandler):
-    def do_GET(self) -> None:
-        status, body = ROUTES.get(self.path, (404, "no existe"))
-        payload = body.encode()
-        self.send_response(status)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
-        self.send_header("Content-Length", str(len(payload)))
-        self.end_headers()
-        self.wfile.write(payload)
-
-    def log_message(self, format: str, *args: object) -> None:
-        pass  # silencia el log de cada petición
-
-
-@pytest.fixture(scope="module")
-def server_url() -> Iterator[str]:
-    """Servidor HTTP local, compartido por el módulo y apagado al terminar.
-
-    El puerto 0 le pide al sistema operativo un puerto libre, así los tests no
-    chocan con nada que ya esté corriendo en tu máquina.
-    """
-    server = ThreadingHTTPServer(("127.0.0.1", 0), _Handler)
-    thread = threading.Thread(target=server.serve_forever, daemon=True)
-    thread.start()
-    try:
-        yield f"http://127.0.0.1:{server.server_address[1]}"
-    finally:
-        server.shutdown()
-        server.server_close()
 
 
 def _free_port() -> int:
