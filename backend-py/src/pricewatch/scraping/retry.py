@@ -47,6 +47,15 @@ def is_retryable(exc: BaseException) -> bool:
     return isinstance(exc, ScraperError) and exc.retryable
 
 
+def default_wait() -> wait_base:
+    """Espera por defecto entre intentos: ≈2 s, ≈4 s, ≈8 s, ≈16 s..., con tope de 30 s.
+
+    A cada espera se le suma hasta 1 s de azar (jitter), para que varios scrapeos que
+    fallaron a la vez no vuelvan a chocar en el mismo instante.
+    """
+    return wait_exponential_jitter(multiplier=2, max=30)
+
+
 async def retry_async[T](
     operation: Callable[[], Awaitable[T]],
     *,
@@ -80,7 +89,7 @@ async def retry_async[T](
     retrying = AsyncRetrying(
         retry=retry_if_exception(is_retryable),
         stop=stop_after_attempt(max_attempts),
-        wait=wait if wait is not None else wait_exponential_jitter(initial=2, max=30),
+        wait=wait if wait is not None else default_wait(),
         # Deja constancia en el log de cada reintento: sin esto, un scrapeo lento por
         # reintentos silenciosos es imposible de diagnosticar.
         before_sleep=before_sleep_log(log, logging.WARNING),
