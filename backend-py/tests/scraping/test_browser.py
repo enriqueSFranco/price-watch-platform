@@ -7,7 +7,25 @@ set_content, así que no dependen de ningún sitio externo.
 
 import pytest
 
-from pricewatch.scraping.browser import BrowserSession, is_blocked
+from pricewatch.scraping.browser import BrowserSession, is_blocked, normalize_user_agent
+
+HEADLESS_UA = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "HeadlessChrome/120.0.0.0 Safari/537.36"
+)
+
+NORMAL_UA = (
+    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/120.0.0.0 Safari/537.36"
+)
+
+
+def test_normalize_user_agent_removes_only_the_headless_marker() -> None:
+    assert normalize_user_agent(HEADLESS_UA) == NORMAL_UA
+
+
+def test_normalize_user_agent_leaves_a_normal_one_untouched() -> None:
+    assert normalize_user_agent(NORMAL_UA) == NORMAL_UA
 
 
 @pytest.mark.parametrize(
@@ -85,3 +103,18 @@ async def test_each_page_has_its_own_context() -> None:
 
         async with session.page() as second:
             assert await second.context.cookies("https://example.com") == []
+
+
+@pytest.mark.browser
+async def test_http_user_agent_does_not_announce_headless(server_url: str) -> None:
+    """Regresión: Liverpool respondió HTTP 403 al user-agent por defecto del modo
+    headless ("HeadlessChrome") y HTTP 200 a uno de Chrome normal, con la misma URL.
+
+    Se comprueba el ENCABEZADO HTTP que llega al servidor, que es lo que la tienda ve.
+    """
+    async with BrowserSession() as session, session.page() as page:
+        await page.goto(f"{server_url}/echo-ua")
+        received = await page.inner_text("body")
+
+    assert "Headless" not in received
+    assert "Chrome/" in received

@@ -42,6 +42,38 @@ BLOCKED_HOSTS = (
 
 NAVIGATION_TIMEOUT_MS = 20_000
 
+# En modo headless, Chromium se anuncia a sí mismo como "HeadlessChrome" en su
+# user-agent.
+HEADLESS_MARKER = "HeadlessChrome"
+
+
+def normalize_user_agent(raw: str) -> str:
+    """Quita la marca "Headless" de un user-agent, dejando el resto intacto.
+
+    Evidencia (nov-2026): Liverpool respondió HTTP 403 al user-agent por defecto del
+    modo headless y HTTP 200 al de un Chrome normal, con la misma URL y la misma IP.
+
+    Se DERIVA del navegador real en lugar de escribirse a mano: así la versión de
+    Chrome que declaramos coincide siempre con la del motor instalado y no se desfasa
+    cuando Playwright se actualiza. Un user-agent fijo que miente sobre la versión es,
+    en sí mismo, una incoherencia detectable.
+
+    Alcance deliberadamente MÍNIMO: no se añade nada más (plugins de sigilo, rotación,
+    cabeceras falsas) mientras no haya un bloqueo medido que lo justifique.
+    """
+    return raw.replace(HEADLESS_MARKER, "Chrome")
+
+
+async def _read_user_agent(browser: Browser) -> str:
+    """Pregunta al navegador cuál es su user-agent por defecto."""
+    ctx = await browser.new_context()
+
+    try:
+        page = await ctx.new_page()
+        return str(await page.evaluate("navigator.userAgent"))
+    finally:
+        await ctx.close()
+
 
 def is_blocked(url: str, resource_type: str) -> bool:
     """Decide si una petición debe cancelarse. Función pura: se prueba sin navegador.
@@ -81,6 +113,7 @@ class BrowserSession:
         self.headless = headless
         self._playwright: Playwright | None = None
         self._browser: Browser | None = None
+        self._user_agent = ""
 
     async def __aenter__(self) -> Self:
         # incializamos playwright
@@ -88,8 +121,14 @@ class BrowserSession:
 
         try:
             # abrir el navegador de chrome
-            self._browser = await self._playwright.chromium.launch(headless=self.headless)
+            self._browser = await self._playwright.chromium.launch(
+                headless=self.headless, channel="chromium"
+            )
+            self._user_agent = normalize_user_agent(await _read_user_agent(self._browser))
         except BaseException:
+            if self._browser is not None:
+                await self._browser.close()
+                self._browser = None
             # Si __aenter__ falla, Python NO llama a __aexit__. Sin este bloque,
             # el proceso de Playwright quedaría vivo.
             await self._playwright.stop()
@@ -128,6 +167,7 @@ class BrowserSession:
             raise RuntimeError("BrowserSession debe usarse dentro de 'async with'")
 
         ctx = await self._browser.new_context(
+            user_agent=self._user_agent,
             locale="es-MX",
             timezone_id="America/Mexico_City",
             viewport={"width": 1366, "height": 768},

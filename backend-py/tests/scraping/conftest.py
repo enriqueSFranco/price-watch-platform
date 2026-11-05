@@ -29,7 +29,10 @@ def _make_handler(requests: list[str]) -> type[BaseHTTPRequestHandler]:
     class Handler(BaseHTTPRequestHandler):
         def do_GET(self) -> None:
             requests.append(self.path)
-            status, body = ROUTES.get(self.path, (404, "no existe"))
+            if self.path == "/echo-ua":
+                status, body = 200, self.headers.get("User-Agent", "")
+            else:
+                status, body = ROUTES.get(self.path, (404, "no existe"))
             payload = body.encode()
             self.send_response(status)
             self.send_header("Content-Type", "text/html; charset=utf-8")
