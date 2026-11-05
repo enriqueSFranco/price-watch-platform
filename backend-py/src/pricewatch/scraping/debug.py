@@ -17,6 +17,8 @@ from playwright.async_api import Page
 
 log = logging.getLogger(__name__)
 
+DEFAULT_DEBUG_DIR = Path(".debug")
+
 
 def _write_text(path: Path, text: str) -> None:
     """Escribe un archivo de texto, creando la carpeta si hace falta."""
