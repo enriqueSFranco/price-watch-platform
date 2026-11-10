@@ -1,0 +1,254 @@
+:global(.dark) .input {
+  --color-text: #e8eaed;
+  --color-label: #9aa0a6;
+  --color-border: #5f6368;
+  --color-background: #3c4043;
+}
+
+.wrapper.readonly .input {
+  background: var(--color-readonly-bg);
+  cursor: default;
+}
+
+.wrapper.readonly .input:focus {
+  box-shadow: none;
+  border-color: var(--color-border);
+}
+
+.wrapper.loading .suffix {
+  pointer-events: none;
+}
+
+.loadingSpinner {
+  animation: spin 1s linear infinite;
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+.wrapper.disabled .input {
+  background: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+.wrapper.disabled .inputContainer {
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.wrapper.disabled .labelText {
+  color: var(--color-disabled-text);
+}
+
+.wrapper.disabled .prefix,
+.wrapper.disabled .suffix {
+  color: var(--color-disabled-text);
+}
+
+
+.wrapper.has-prefix .input {
+  padding-left: 36px; /* espacio para el ícono */
+}
+
+.wrapper.has-suffix .input {
+  padding-right: 36px;
+}
+
+.wrapper.has-error .input {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 1px var(--color-error);
+}
+
+.wrapper.is-valid .input {
+  border-color: var(--color-success);
+  box-shadow: 0 0 0 1px var(--color-success);
+}
+
+/* ---------- Estados del input ---------- */
+
+.input:hover {
+  background: var(--color-hover-bg);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+.input:focus-visible {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.input:disabled {
+  background: var(--color-disabled-bg);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+/* Cuando hay texto dentro */
+.input:not(:placeholder-shown) ~ .labelText {
+  transform: translateY(-12px) scale(0.85);
+  opacity: 1;
+}
+
+/* Cuando está enfocado */
+.input:focus ~ .labelText {
+  transform: translateY(-12px) scale(0.85);
+  opacity: 1;
+}
+
+/* BASE ----------------------------------------- */
+
+.inputBase {
+  width: 100%;
+  gap: 0.5rem; /* íconos */
+  color: var(--text-primary);
+  background: transparent;
+
+  border-radius: 0.5rem;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+/* El <input> real */
+.inputElement {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  color: var(--text-primary);
+}
+
+.inputElement::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* VARIANTES ------------------------------------- */
+
+/* OUTLINED */
+.input--outlined {
+  border: 1px solid var(--border-color);
+  background: transparent;
+}
+
+.input--outlined:hover {
+  border-color: var(--border-strong);
+}
+
+.input--outlined.input--focused {
+  border-color: var(--brand-primary);
+}
+
+/* FILLED */
+.input--filled {
+  background: var(--surface-2);
+  border: 1px solid transparent;
+}
+
+.input--filled:hover {
+  background: var(--surface-3);
+}
+
+.input--filled.input--focused {
+  border-color: var(--brand-primary);
+}
+
+/* STANDARD */
+.input--standard {
+  border-bottom: 1px solid var(--border-color);
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.input--standard:hover {
+  border-bottom-color: var(--border-strong);
+}
+
+.input--standard.input--focused {
+  border-bottom-color: var(--brand-primary);
+}
+
+/* ESTADOS --------------------------------------- */
+
+.input--error {
+  border-color: var(--error) !important;
+}
+
+.input--valid {
+  border-color: var(--success) !important;
+}
+
+.input--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* icons */
+.prefix,
+.suffix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.prefix {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.suffix {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* SMALL */
+.size-sm.has-prefix .input { padding-left: 32px; }
+.size-sm.has-suffix .input { padding-right: 32px; }
+
+.size-sm .prefix { left: 8px; }
+.size-sm .suffix { right: 8px; }
+
+/* MEDIUM */
+.size-md.has-prefix .input { padding-left: 36px; }
+.size-md.has-suffix .input { padding-right: 36px; }
+
+.size-md .prefix { left: 10px; }
+.size-md .suffix { right: 10px; }
+
+/* LARGE */
+.size-lg.has-prefix .input { padding-left: 42px; }
+.size-lg.has-suffix .input { padding-right: 42px; }
+
+.size-lg .prefix { left: 12px; }
+.size-lg .suffix { right: 12px; }
+
+.has-prefix .labelText {
+  left: 36px;
+}
+
+.has-prefix.size-sm .labelText {
+  left: 30px;
+}
+
+.has-prefix.size-lg .labelText {
+  left: 40px;
+}

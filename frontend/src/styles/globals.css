@@ -1,0 +1,172 @@
+@import "tailwindcss";
+
+@layer base {
+	:root {
+		/* BRAND */
+		--brand-primary: #bbbbbb;
+		--brand-primary-hover: #d2d2d2;
+		--brand-primary-active: #e0e0e0;
+
+		/* BACKGROUND */
+		--bg-base: #ffffff;
+		--bg-subtle: #f6f6f6;
+		--bg-elevated: #ffffff;
+
+		/* SURFACES */
+		--surface-1: #ffffff;
+		--surface-2: #f7f7f7;
+		--surface-3: #eeeeee;
+
+		/* TEXT */
+		--text-primary: #1f1f1f;
+		--text-secondary: #4a4a4a;
+		--text-tertiary: #6e6e6e;
+		--text-disabled: #b4b4b4;
+		--text-inverted: #ffffff;
+
+		/* BORDER */
+		--border-color: #e4e4e4;
+		--border-strong: #cfcfcf;
+
+		/* INTERACTIONS */
+		--hover-bg: #e9e9e9;
+		--active-bg: #dcdcdc;
+
+		/* FEEDBACK (GRISES) */
+		--success: #8a8a8a;
+		--warning: #a6a6a6;
+		--error: #7a7a7a;
+
+		/* SHADOWS */
+		--shadow-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+		--shadow-card: 0 2px 8px rgba(0, 0, 0, 0.06);
+	}
+
+	/* ==========================================
+	   DARK MODE — TONOS GRISES
+	   ========================================== */
+	@media (prefers-color-scheme: dark) {
+		:root {
+			/* BACKGROUND */
+			--bg-base: #0d0d0d;
+			--bg-subtle: #141414;
+			--bg-elevated: #1a1a1a;
+
+			/* SURFACES */
+			--surface-1: #1c1c1c;
+			--surface-2: #222222;
+			--surface-3: #2b2b2b;
+
+			/* TEXT */
+			--text-primary: hsl(0, 0%, 95%);
+			--text-secondary: hsl(0, 0%, 78%);
+			--text-tertiary: hsl(0, 0%, 60%);
+			--text-disabled: hsl(0, 0%, 36%);
+			--text-inverted: hsl(0, 0%, 100%);
+
+			/* BORDER */
+			--border-color: #2e2e2e;
+			--border-strong: #3a3a3a;
+
+			/* BRAND (gris) */
+			--brand-primary: hsl(0, 0%, 73%);
+			--brand-primary-hover: hsl(0, 0%, 82%);
+			--brand-primary-active: hsl(0, 0%, 88%);
+
+			/* FEEDBACK (GRISES) */
+			--success: hsl(0, 0%, 56%);
+			--warning: hsl(0, 0%, 64%);
+			--error: hsl(0, 0%, 48%);
+
+			/* INTERACTIONS */
+			--hover-bg: hsl(0, 0%, 16%);
+			--active-bg: hsl(0, 0%, 20%);
+
+			/* SHADOWS */
+			--shadow-soft: 0 1px 3px hsla(0, 0%, 0%, 0.35);
+			--shadow-card: 0 4px 12px hsla(0, 0%, 0%, 0.45);
+		}
+	}
+}
+
+
+/* ============================================================
+   RESETS + BASE STYLES
+   ============================================================ */
+@layer base {
+	html {
+		color-scheme: light dark;
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	html,
+	body {
+		max-width: 100vw;
+		overflow-x: hidden;
+	}
+
+	body {
+		background: var(--bg-base);
+		color: var(--text-primary);
+		font-family: var(--font-sans, system-ui, sans-serif);
+		min-height: 100vh;
+	}
+
+	img,
+	picture,
+	video,
+	svg {
+		display: block;
+		max-width: 100%;
+		height: auto;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	ul,
+	ol {
+		list-style: none;
+	}
+
+	button {
+		background: none;
+		border: none;
+		color: inherit;
+		cursor: pointer;
+		font: inherit;
+	}
+
+	input,
+	textarea {
+		color: inherit;
+		background: transparent;
+		border: none;
+		outline: none;
+	}
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+@layer base {
+	:focus-visible {
+		outline: 2px solid var(--brand-primary);
+		outline-offset: 3px;
+		border-radius: 4px;
+	}
+}

@@ -1,0 +1,13 @@
+.layout {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+}
+
+.layoutContainer {
+	flex-grow: 1;
+	display: grid;
+	grid-template-columns: repeat(12, [col-start] 1fr);
+	grid-template-areas: "sidebar main-content";
+}
