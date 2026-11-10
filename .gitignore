@@ -1,0 +1,16 @@
+# Sistema operativo
+.DS_Store
+
+# Logs
+*.log
+
+# Secretos: nunca se versionan. El ejemplo sí.
+.env
+.env.*
+!.env.example
+
+# Configuración personal del editor
+.vscode/
+
+# Dependencias
+node_modules/
