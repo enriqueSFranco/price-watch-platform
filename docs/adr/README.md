@@ -24,3 +24,4 @@ No hace falta para decisiones pequeñas o fácilmente reversibles.
 | ADR | Decisión | Estado |
 |---|---|---|
 | [0001](0001-port-backend-to-python.md) | Portar el backend a Python | Accepted |
+| [0002](0002-availability-enum-with-unknown.md) | Disponibilidad como enum con UNKNOWN | Accepted |
