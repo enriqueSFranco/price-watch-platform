@@ -29,3 +29,13 @@ def real_page() -> Callable[[str], str]:
         return path.read_text(encoding="utf-8")
 
     return load
+
+def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
+    """Marca como `local_fixtures` todo test que use la fixture `real_page`.
+
+    Se deriva de la dependencia y no de un decorador manual: así un test nuevo que
+    use `real_page` queda marcado sin que nadie tenga que acordarse.
+    """
+    for item in items:
+        if isinstance(item, pytest.Function) and "real_page" in item.fixturenames:
+            item.add_marker(pytest.mark.local_fixtures)
