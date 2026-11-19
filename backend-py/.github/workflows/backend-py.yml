@@ -1,0 +1,49 @@
+name: backend-py
+
+on:
+  pull_request:
+    branches: [main]
+  push: 
+    branches: [main]
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'ref/heads/main' }}
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: backend-py
+
+jobs:
+  checks:
+    name: Lint, type-check and test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Setup python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version-file: '3.13'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 #vv10.3.3
+        with:
+          enable-cache: true
+          cache-dependency-glob: backend-py/uv.lock
+      - name: Install dependencies
+        run: uv sync --locked
+      - name: Check formatting
+        run: uv run ruff format --check .
+      - name: Lint
+        run: uv run ruff check .
+      - name: Type-check
+        run: uv run mypy src
+      - name: Run tests
+        run: uv run pytest -q -rs -m "not browser and not local_fixtures"
