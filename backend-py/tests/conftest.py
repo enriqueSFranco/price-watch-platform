@@ -30,6 +30,7 @@ def real_page() -> Callable[[str], str]:
 
     return load
 
+
 def pytest_collection_modifyitems(items: list[pytest.Item]) -> None:
     """Marca como `local_fixtures` todo test que use la fixture `real_page`.
 
